@@ -10,7 +10,7 @@ public class Model : MonoBehaviour {
 
     private float time;
 
-	private JSON json {
+	public string json {
 		get {
 			return new JSON { {
 				"elements", new[] {
@@ -27,7 +27,7 @@ public class Model : MonoBehaviour {
 						} }
 					}
 				}
-			} };
+			} }.ToString();
 		}
 	}
 
