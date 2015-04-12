@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 
 public class Editor : MonoBehaviour {
 	public Transform focus;
@@ -58,4 +59,28 @@ public class Editor : MonoBehaviour {
             }
         }
 	}
+
+
+
+    /// <summary>
+    /// Imports a model from a JSON string and loads it into the editor
+    /// </summary>
+    /// <param name="filePathAndName">The File Path and File Name to read from</param>
+    public void ImportModelFromJSON(string filePathAndName)
+    {
+        // TODO - Write up importing
+        //this.model.json = File.ReadAllText(filePathAndName);
+    }
+
+
+
+    /// <summary>
+    /// Exports the model into a JSON string and writes to the given file
+    /// </summary>
+    /// <param name="filePathAndName">The File Path and File Name to write to</param>
+    public void ExportModelToJSON(string filePathAndName)
+    {
+        Directory.CreateDirectory(filePathAndName);
+        File.WriteAllText(this.model.json, filePathAndName);
+    }
 }
