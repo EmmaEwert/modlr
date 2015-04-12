@@ -10,8 +10,10 @@ public class Model : MonoBehaviour {
 
 	private JSON json {
 		get {
-			return new JSON{
-				from = { 0, 0, 0 }
+			return new JSON {
+				elements = new[] {
+					new JSON { from = new[] { 0, 0, 0 } }
+				}
 			};
 		}
 	}
