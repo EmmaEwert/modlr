@@ -14,6 +14,9 @@ public class Editor : MonoBehaviour {
 	void Start() {
 		this.transform.LookAt(focus.position, Vector3.up);
 		this.transform.position = this.focus.position - this.transform.forward * this.zoom;
+
+        // Debug
+        this.Save("test", "test");
 	}
 
 
@@ -77,10 +80,11 @@ public class Editor : MonoBehaviour {
     /// <summary>
     /// Exports the model into a JSON string and writes to the given file
     /// </summary>
-    /// <param name="filePathAndName">The File Path and File Name to write to</param>
-    public void ExportModelToJSON(string filePathAndName)
+    /// <param name="filePath">The File Path to write the file to</param>
+    /// <param name="fileName">The File Name to write to </param>
+    public void Save(string filePath, string fileName)
     {
-        Directory.CreateDirectory(filePathAndName);
-        File.WriteAllText(this.model.json, filePathAndName);
+        Directory.CreateDirectory(filePath);
+        File.WriteAllText(filePath + "/" + fileName + ".json", this.model.json);
     }
 }
