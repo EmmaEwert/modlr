@@ -66,10 +66,10 @@ public class Editor : MonoBehaviour {
 
 
     /// <summary>
-    /// Imports a model from a JSON string and loads it into the editor
+    /// Loads a model from a JSON string and loads it into the editor
     /// </summary>
     /// <param name="filePathAndName">The File Path and File Name to read from</param>
-    public void ImportModelFromJSON(string filePathAndName)
+    public void Load(string filePathAndName)
     {
         // TODO - Write up importing
         //this.model.json = File.ReadAllText(filePathAndName);
@@ -78,7 +78,7 @@ public class Editor : MonoBehaviour {
 
 
     /// <summary>
-    /// Exports the model into a JSON string and writes to the given file
+    /// Saves the model into a JSON string and writes to the given file
     /// </summary>
     /// <param name="filePath">The File Path to write the file to</param>
     /// <param name="fileName">The File Name to write to </param>
