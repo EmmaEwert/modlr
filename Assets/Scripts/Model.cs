@@ -8,6 +8,14 @@ public class Model : MonoBehaviour {
 	private Block block = new Block();
 	private float time;
 
+	private JSON json {
+		get {
+			return new JSON{
+				from = { 0, 0, 0 }
+			};
+		}
+	}
+
 
 
 	void Start() {
@@ -47,7 +55,7 @@ public class Model : MonoBehaviour {
 
 
 	public override string ToString() {
-		throw new System.NotImplementedException();
+		return this.json.Stringify();
 	}
 
 
