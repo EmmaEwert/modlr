@@ -6,7 +6,7 @@ public class Model : MonoBehaviour {
 	public GameObject boxPrefab;
 	
 	// Add initial 48x48x48 volume
-	private Block block = new Block();
+	public Block block = new Block();
 	private float time;
 
 
@@ -19,30 +19,7 @@ public class Model : MonoBehaviour {
 
 
 
-	void Update() {
-		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		RaycastHit hit;
-
-		if (Physics.Raycast(ray, out hit)) {
-			if (Input.GetMouseButtonDown(0)) {
-				hit.point -= hit.normal * 0.5f;
-				this.block.Remove(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
-				
-				this.Rebuild();
-			}
-			
-			if (Input.GetMouseButtonDown(1)) {
-				hit.point += hit.normal * 0.5f;
-				this.block.Add(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
-
-				this.Rebuild();
-			}
-		}
-	}
-
-
-
-	void Rebuild() {
+	public void Rebuild() {
 		this.time = Time.realtimeSinceStartup;
 
 		foreach (Transform transform in this.transform) {
