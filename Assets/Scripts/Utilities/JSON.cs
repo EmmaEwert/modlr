@@ -6,6 +6,23 @@ public class JSON : IEnumerable {
 
 
 
+	public JSON() { }
+
+
+	
+	// Requires: Somewhat valid JSON object string
+	public JSON(string text) {
+		this.objects = (this.Parse(text.Trim().Trim(new[]{'{','}'})) as JSON).objects;
+	}
+
+
+
+	public static object Parse(string text) {
+		return new JSON();
+	}
+
+
+
 	public override string ToString() {
 		var json = "{";
 		foreach (var obj in objects) {

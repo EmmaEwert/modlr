@@ -32,6 +32,8 @@ public class Model : MonoBehaviour {
 
 
 	void Start() {
+		Debug.Log(new JSON("{\"elements\":[{\"from\":[0,0,0],\"to\":[15.5,15,5E-06],\"faces\":{\"down\":{\"texture\":\"#down\",\"cullface\":\"down\"},\"up\":{\"texture\":\"#up\",\"cullface\":\"up\"},\"north\":{\"texture\":\"#north\",\"cullface\":\"north\"},\"south\":{\"texture\":\"#south\",\"cullface\":\"south\"},\"west\":{\"texture\":\"#west\",\"cullface\":\"west\"},\"east\":{\"texture\":\"#east\",\"cullface\":\"east\"}}}]}"));
+
 		block.Add(new Box(16));
 
 		this.Rebuild();
