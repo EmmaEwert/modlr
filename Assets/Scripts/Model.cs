@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 public class Model : MonoBehaviour {
 	public GameObject boxPrefab;
-	
-	// Add initial 48x48x48 volume
+
 	private Block block = new Block();
 	private float time;
 
@@ -38,6 +37,17 @@ public class Model : MonoBehaviour {
 				this.Rebuild();
 			}
 		}
+
+		// Temporary JSON test
+		if (Input.GetKeyDown(KeyCode.Return)) {
+			Debug.Log(this);
+		}
+	}
+
+
+
+	public override string ToString() {
+		throw new System.NotImplementedException();
 	}
 
 

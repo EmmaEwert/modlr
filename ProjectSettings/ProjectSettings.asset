@@ -118,6 +118,7 @@ PlayerSettings:
     serializedVersion: 2
     rgba: 0
   iOSLaunchScreenFillPct: 1
+  iOSLaunchScreenSize: 100
   iOSLaunchScreenCustomXibPath: 
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
@@ -130,6 +131,7 @@ PlayerSettings:
   - width: 320
     height: 180
     banner: {fileID: 0}
+  androidGamepadSupportLevel: 0
   resolutionDialogBanner: {fileID: 0}
   m_BuildTargetIcons:
   - m_BuildTarget: 
