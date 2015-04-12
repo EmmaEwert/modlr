@@ -8,8 +8,6 @@ public class Model : MonoBehaviour {
 	// Add initial 48x48x48 volume
 	public Block block = new Block();
 
-	private Block block = new Block();
-
     private float time;
 
 	private JSON json {
@@ -52,7 +50,7 @@ public class Model : MonoBehaviour {
 
 
 
-	void Rebuild() {
+	public void Rebuild() {
 		this.time = Time.realtimeSinceStartup;
 
 		foreach (Transform transform in this.transform) {
