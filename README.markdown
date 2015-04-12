@@ -4,27 +4,27 @@ Model/Texture Editor for Minecraft.
 
 ## Features
 
-W to move forward (zoom in)
-S to move back (zoom out)
-A to orbit left
-D to orbit right
-Scroll to change brush size 
+* W to move forward (zoom in)
+* S to move back (zoom out)
+* A to orbit left
+* D to orbit right
+* ~~Scroll to change brush size~~
 
 ### Sculpting
 
-Right click to add blocks.
-Left click to remove blocks.
-Models can be loaded through a sidebar
+* Right click to add blocks.
+* Left click to remove blocks.
+* ~~Models can be loaded through a sidebar~~
 
 ### Painting
 
-Right click to paint.
-Left click to pick colour.
-Colours and textures can be selected through a sidebar
+* ~~Right click to paint.~~
+* ~~Left click to pick colour.~~
+* ~~Colours and textures can be selected through a sidebar~~
 
 ## Future
 
-Planned or suggested features
+Planned or suggested features.
 
 ### Material-based editing
 
@@ -43,7 +43,7 @@ The area of effect is adjusted with the mouse scroll wheel, or +/-.
 
 ### Rotation
 
-22.5° increments.
+22.5Â° increments.
 
 ### Multiple sub-blocks
 
@@ -89,9 +89,9 @@ linking.
 
 ## Changelog
 
-### 0.1.0
+### 0.0.0
 
-Initial release.
+Unreleased.
 
 ## License
 
@@ -99,6 +99,6 @@ Initial release.
 
 ## Credits
 
-Kwibble, Elyon
+Lyphiix, Elyon
 
 [cc-by-4.0]: http://creativecommons.org/licenses/by/4.0/
