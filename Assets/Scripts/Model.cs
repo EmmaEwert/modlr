@@ -10,11 +10,22 @@ public class Model : MonoBehaviour {
 
 	private JSON json {
 		get {
-			return new JSON {
-				elements = new[] {
-					new JSON { from = new[] { 0, 0, 0 } }
+			return new JSON { {
+				"elements", new[] {
+					new JSON {
+						{ "from",  new[] {  0,  0,  0 } },
+						{ "to",    new[] { 15.5f, 15, .5e-5 } },
+						{ "faces", new JSON {
+							{ "down",  new JSON { { "texture", "#down"  }, { "cullface", "down"  } } },
+							{ "up",    new JSON { { "texture", "#up"    }, { "cullface", "up"    } } },
+							{ "north", new JSON { { "texture", "#north" }, { "cullface", "north" } } },
+							{ "south", new JSON { { "texture", "#south" }, { "cullface", "south" } } },
+							{ "west",  new JSON { { "texture", "#west"  }, { "cullface", "west"  } } },
+							{ "east",  new JSON { { "texture", "#east"  }, { "cullface", "east"  } } }
+						} }
+					}
 				}
-			};
+			} };
 		}
 	}
 
@@ -50,14 +61,8 @@ public class Model : MonoBehaviour {
 
 		// Temporary JSON test
 		if (Input.GetKeyDown(KeyCode.Return)) {
-			Debug.Log(this);
+			Debug.Log(this.json);
 		}
-	}
-
-
-
-	public override string ToString() {
-		return this.json.Stringify();
 	}
 
 
