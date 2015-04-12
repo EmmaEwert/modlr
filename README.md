@@ -8,18 +8,20 @@ Model/Texture Editor for Minecraft.
 * S to move back (zoom out)
 * A to orbit left
 * D to orbit right
+* Space to orbit up
+* Shift to orbit down
 * ~~Scroll to change brush size~~
 
 ### Sculpting
 
-* Right click to add blocks.
-* Left click to remove blocks.
+* Right click to add blocks
+* Left click to remove blocks
 * ~~Models can be loaded through a sidebar~~
 
 ### Painting
 
-* ~~Right click to paint.~~
-* ~~Left click to pick colour.~~
+* ~~Right click to paint~~
+* ~~Left click to pick colour~~
 * ~~Colours and textures can be selected through a sidebar~~
 
 ## Future
