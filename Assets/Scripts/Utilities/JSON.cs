@@ -12,11 +12,11 @@ public class JSON : IEnumerable {
 			string key = obj.Key;
 			object value = obj.Value;
 			json += string.Format("\"{0}\":", key);
-			if (value is IEnumerable<JSON> || value is IEnumerable<object> || value is IEnumerable<IEnumerable<char>> || value is IEnumerable<int> || value is IEnumerable<float> || value is IEnumerable<double>) {
+			if (value is IEnumerable<object> || value is IEnumerable<IEnumerable<char>> || value is IEnumerable<int> || value is IEnumerable<float> || value is IEnumerable<double>) {
 				json += "[";
-                if (value is IEnumerable<object>) {
+				if (value is IEnumerable<object>) {
 					new List<object>(value as object[]).ForEach(o => json += o + ",");
-				} else if (value is IEnumerable<IEnumerable<char>>) {
+				} else if (value is IEnumerable<char>) {
 					new List<IEnumerable<char>>(value as IEnumerable<IEnumerable<char>>).ForEach(o => json += string.Format("\"{0}\",", o));
 				} else if (value is IEnumerable<int>) {
 					new List<int>(value as IEnumerable<int>).ForEach(o => json += o + ",");
@@ -24,9 +24,7 @@ public class JSON : IEnumerable {
 					new List<float>(value as IEnumerable<float>).ForEach(o => json += o + ",");
 				} else if (value is IEnumerable<double>) {
 					new List<double>(value as IEnumerable<double>).ForEach(o => json += o + ",");
-                } else if (value is IEnumerable<JSON>) {
-                    new List<JSON>(value as IEnumerable<JSON>).ForEach(o => json += o + ",");
-                }
+				}
 				json = json.TrimEnd(new[] { ',' }) + "]";
 			} else if (value is IEnumerable<char>) {
 				json += string.Format("\"{0}\"", value);
