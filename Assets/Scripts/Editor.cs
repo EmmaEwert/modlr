@@ -60,8 +60,8 @@ public class Editor : MonoBehaviour {
         }
 
         // Debug
-        if (Input.GetKeyDown(KeyCode.Return)) {
-			Debug.Log(this.model.json);
+        if (Input.GetKeyDown (KeyCode.Return)) {
+			this.Save("Export", "crafting_table");
 		}
 	}
 

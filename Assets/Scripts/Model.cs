@@ -27,7 +27,7 @@ public class Model : MonoBehaviour {
             {
                 { "parent", this.parent, null },
                 { "ambientocclusion", this.ambientocclusion, true },
-                { "textures", this.textures },
+                { "textures", this.textures, null },
                 {
                     "elements", this.block.boxes.ConvertAll(box =>
                         new JSON
@@ -40,10 +40,10 @@ public class Model : MonoBehaviour {
                                 {
                                     { "up", new JSON { { "texture", "#up" }, { "cullface", "up" } } },
                                     { "down", new JSON { { "texture", "#down" }, { "cullface", "down" } } },
-                                    { "north", new JSON { { "texture", "#north" }, { "cullface", "north" } } },
-                                    { "south", new JSON { { "texture", "#south" }, { "cullface", "south" } } },
-                                    { "west", new JSON { { "texture", "#west" }, { "cullface", "west" } } },
-                                    { "east", new JSON { { "texture", "#east" }, { "cullface", "east" } } }
+                                    { "north", new JSON { { "texture", "#side" }, { "cullface", "north" } } },
+                                    { "south", new JSON { { "texture", "#side" }, { "cullface", "south" } } },
+                                    { "west", new JSON { { "texture", "#side" }, { "cullface", "west" } } },
+                                    { "east", new JSON { { "texture", "#side" }, { "cullface", "east" } } }
                                 }
                             }
                         }
@@ -59,6 +59,15 @@ public class Model : MonoBehaviour {
 		Debug.Log(new JSON("{\"elements\":[{\"from\":[0,0,0],\"to\":[15.5,15,5E-06],\"faces\":{\"down\":{\"texture\":\"#down\",\"cullface\":\"down\"},\"up\":{\"texture\":\"#up\",\"cullface\":\"up\"},\"north\":{\"texture\":\"#north\",\"cullface\":\"north\"},\"south\":{\"texture\":\"#south\",\"cullface\":\"south\"},\"west\":{\"texture\":\"#west\",\"cullface\":\"west\"},\"east\":{\"texture\":\"#east\",\"cullface\":\"east\"}}}]}"));
 
 		block.Add(new Box(16));
+
+        this.textures = new Dictionary<string, string>();
+        this.textures["particle"] = "blocks/crafting_table_front";
+        this.textures["up"] = "blocks/crafting_table_top";
+        this.textures["down"] = "blocks/planks_oak";
+        this.textures["north"] = "blocks/crafting_table_front";
+        this.textures["west"] = "blocks/crafting_table_front";
+        this.textures["south"] = "blocks/crafting_table_side";
+        this.textures["east"] = "blocks/crafting_table_side";
 
 		this.Rebuild();
 	}

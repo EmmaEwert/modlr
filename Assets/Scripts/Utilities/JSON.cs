@@ -47,6 +47,13 @@ public class JSON : IEnumerable {
 				json = json.TrimEnd(new[] { ',' }) + "]";
 			} else if (value is IEnumerable<char>) {
 				json += string.Format("\"{0}\"", value);
+            } else if (value is Dictionary<string, string>) {
+                json += "{";
+                foreach (var keyValue in (value as Dictionary<string, string>))
+                {
+                    json += string.Format("\"{0}\":\"{1}\",", keyValue.Key, keyValue.Value);
+                }
+                json = json.TrimEnd(new[] { ',' }) + "}";
 			} else {
 				json += value;
 			}
