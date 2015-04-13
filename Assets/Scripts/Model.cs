@@ -10,26 +10,48 @@ public class Model : MonoBehaviour {
 
     private float time;
 
-	public string json {
-		get {
-			return new JSON { {
-				"elements", new[] {
-					new JSON {
-						{ "from",  new[] {  0,  0,  0 } },
-						{ "to",    new[] { 15.5f, 15, .5e-5 } },
-						{ "faces", new JSON {
-							{ "down",  new JSON { { "texture", "#down"  }, { "cullface", "down"  } } },
-							{ "up",    new JSON { { "texture", "#up"    }, { "cullface", "up"    } } },
-							{ "north", new JSON { { "texture", "#north" }, { "cullface", "north" } } },
-							{ "south", new JSON { { "texture", "#south" }, { "cullface", "south" } } },
-							{ "west",  new JSON { { "texture", "#west"  }, { "cullface", "west"  } } },
-							{ "east",  new JSON { { "texture", "#east"  }, { "cullface", "east"  } } }
-						} }
-					}
-				}
-			} }.ToString();
-		}
-	}
+
+    private bool ambientocclusion = true;
+
+    private string parent;
+
+    private Dictionary<string, string> textures = new Dictionary<string,string>();
+
+
+
+    public string json
+    {
+        get
+        {
+            return new JSON
+            {
+                { "parent", this.parent, null },
+                { "ambientocclusion", this.ambientocclusion, true },
+                { "textures", this.textures },
+                {
+                    "elements", this.block.boxes.ConvertAll(box =>
+                        new JSON
+                        {
+                            { "from", box.min },
+                            { "to", box.max },
+                            //{ "shade", box.shade, true },
+                            {
+                                "faces", new JSON
+                                {
+                                    { "up", new JSON { { "texture", "#up" }, { "cullface", "yp" } } },
+                                    { "down", new JSON { { "texture", "#down" }, { "cullface", "down" } } },
+                                    { "north", new JSON { { "texture", "#north" }, { "cullface", "north" } } },
+                                    { "south", new JSON { { "texture", "#south" }, { "cullface", "south" } } },
+                                    { "west", new JSON { { "texture", "#west" }, { "cullface", "west" } } },
+                                    { "east", new JSON { { "texture", "#east" }, { "cullface", "east" } } }
+                                }
+                            }
+                        }
+                    )
+                }
+            }.ToString();
+        }
+    }
 
 
 
@@ -37,15 +59,6 @@ public class Model : MonoBehaviour {
 		block.Add(new Box(16));
 
 		this.Rebuild();
-	}
-
-
-
-	void Update() {
-		// Temporary JSON test
-		if (Input.GetKeyDown(KeyCode.Return)) {
-			Debug.Log(this.json);
-		}
 	}
 
 
