@@ -38,12 +38,12 @@ public class Model : MonoBehaviour {
                             {
                                 "faces", new JSON
                                 {
-                                    { "up", new JSON { { "texture", "#up" }, { "cullface", "up" } } },
-                                    { "down", new JSON { { "texture", "#down" }, { "cullface", "down" } } },
-                                    { "north", new JSON { { "texture", "#side" }, { "cullface", "north" } } },
-                                    { "south", new JSON { { "texture", "#side" }, { "cullface", "south" } } },
-                                    { "west", new JSON { { "texture", "#side" }, { "cullface", "west" } } },
-                                    { "east", new JSON { { "texture", "#side" }, { "cullface", "east" } } }
+                                    { "up", new JSON { { "texture", "#up" } } },
+                                    { "down", new JSON { { "texture", "#down" } } },
+                                    { "north", new JSON { { "texture", "#side1" } } },
+                                    { "south", new JSON { { "texture", "#side2" } } },
+                                    { "west", new JSON { { "texture", "#side1" } } },
+                                    { "east", new JSON { { "texture", "#side2" } } }
                                 }
                             }
                         }
@@ -62,10 +62,8 @@ public class Model : MonoBehaviour {
         this.textures["particle"] = "blocks/crafting_table_front";
         this.textures["up"] = "blocks/crafting_table_top";
         this.textures["down"] = "blocks/planks_oak";
-        this.textures["north"] = "blocks/crafting_table_front";
-        this.textures["west"] = "blocks/crafting_table_front";
-        this.textures["south"] = "blocks/crafting_table_side";
-        this.textures["east"] = "blocks/crafting_table_side";
+        this.textures["side1"] = "blocks/crafting_table_front";
+        this.textures["side2"] = "blocks/crafting_table_side";
 
 		this.Rebuild();
 	}
