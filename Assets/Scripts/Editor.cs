@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 
 public class Editor : MonoBehaviour {
 	public Transform focus;
+
+    public Model model;
 
 	private float zoom = 32.0f;
 
@@ -10,7 +13,7 @@ public class Editor : MonoBehaviour {
 
 	void Start() {
 		this.transform.LookAt(focus.position, Vector3.up);
-		this.transform.position = this.focus.position - this.transform.forward * this.zoom;
+        this.transform.position = this.focus.position - this.transform.forward * this.zoom;
 	}
 
 
@@ -31,5 +34,57 @@ public class Editor : MonoBehaviour {
 			this.transform.LookAt(focus.position, Vector3.up);
 			this.transform.position = this.focus.position - this.transform.forward * this.zoom;
 		}
+
+        
+        // Editing of Model
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                hit.point -= hit.normal * 0.5f;
+                this.model.block.Remove(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
+
+                this.model.Rebuild();
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                hit.point += hit.normal * 0.5f;
+                this.model.block.Add(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
+
+                this.model.Rebuild();
+            }
+        }
+
+        // Debug
+        if (Input.GetKeyDown (KeyCode.Return)) Debug.Log(this.model.json);
 	}
+
+
+
+    /// <summary>
+    /// Loads a model from a JSON string and loads it into the editor
+    /// </summary>
+    /// <param name="filePathAndName">The File Path and File Name to read from</param>
+    public void Load(string filePathAndName)
+    {
+        // TODO - Write up importing
+        //this.model.json = File.ReadAllText(filePathAndName);
+    }
+
+
+
+    /// <summary>
+    /// Saves the model into a JSON string and writes to the given file
+    /// </summary>
+    /// <param name="filePath">The File Path to write the file to</param>
+    /// <param name="fileName">The File Name to write to </param>
+    public void Save(string filePath, string fileName)
+    {
+        Directory.CreateDirectory(filePath);
+        File.WriteAllText(filePath + "/" + fileName + ".json", this.model.json);
+    }
 }
