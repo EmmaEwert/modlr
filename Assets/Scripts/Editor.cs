@@ -20,6 +20,9 @@ public class Editor : MonoBehaviour {
     private EditorState currentState = EditorState.Sculpting;
 
 
+    // Painting variables
+    private Color paintColor;
+
 
 	void Start() {
 		this.transform.LookAt(focus.position, Vector3.up);
@@ -80,12 +83,25 @@ public class Editor : MonoBehaviour {
                 case EditorState.Painting:
                     if (Input.GetMouseButtonDown(0))
                     {
+                        // Get the color on the box
+                        Texture2D texture = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
 
+                        Vector2 uv = hit.textureCoord * 16.0F;
+                        Debug.Log("Get Pixel Color from coords: " + uv);
+
+                        this.paintColor = texture.GetPixel(Mathf.FloorToInt(uv.x), Mathf.FloorToInt(uv.y));
                     }
 
                     if (Input.GetMouseButtonDown(1))
                     {
+                        // Paint the selected color on the box
+                        Texture2D texture = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
 
+                        Vector2 uv = hit.textureCoord * 16.0F;
+                        Debug.Log("Set Pixel Color at coords: " + uv);
+
+                        texture.SetPixel(Mathf.FloorToInt(uv.x), Mathf.FloorToInt(uv.y), this.paintColor);
+                        texture.Apply();
                     }
                     break;
                 default:
