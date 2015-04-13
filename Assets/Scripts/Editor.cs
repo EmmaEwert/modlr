@@ -13,10 +13,7 @@ public class Editor : MonoBehaviour {
 
 	void Start() {
 		this.transform.LookAt(focus.position, Vector3.up);
-		this.transform.position = this.focus.position - this.transform.forward * this.zoom;
-
-        // Debug
-        this.Save("test", "test");
+        this.transform.position = this.focus.position - this.transform.forward * this.zoom;
 	}
 
 
@@ -61,6 +58,9 @@ public class Editor : MonoBehaviour {
                 this.model.Rebuild();
             }
         }
+
+        // Debug
+        if (Input.GetKeyDown (KeyCode.Return)) Debug.Log(this.model.json);
 	}
 
 
