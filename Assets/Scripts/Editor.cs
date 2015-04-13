@@ -3,11 +3,21 @@ using System.Collections;
 using System.IO;
 
 public class Editor : MonoBehaviour {
+    public enum EditorState
+    {
+        Sculpting,
+        Painting
+    }
+
+
+
 	public Transform focus;
 
     public Model model;
 
 	private float zoom = 32.0f;
+
+    private EditorState currentState = EditorState.Sculpting;
 
 
 
@@ -36,32 +46,77 @@ public class Editor : MonoBehaviour {
 		}
 
         
+        // Switch states on tab
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            this.ChangeState();
+        }
+
         // Editing of Model
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
         {
-            if (Input.GetMouseButtonDown(0))
+            switch (this.currentState)
             {
-                hit.point -= hit.normal * 0.5f;
-                this.model.block.Remove(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
+                case EditorState.Sculpting:
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        hit.point -= hit.normal * 0.5f;
+                        this.model.block.Remove(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
 
-                this.model.Rebuild();
-            }
+                        this.model.Rebuild();
+                    }
 
-            if (Input.GetMouseButtonDown(1))
-            {
-                hit.point += hit.normal * 0.5f;
-                this.model.block.Add(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        hit.point += hit.normal * 0.5f;
+                        this.model.block.Add(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
 
-                this.model.Rebuild();
+                        this.model.Rebuild();
+                    }
+                    break;
+                case EditorState.Painting:
+                    if (Input.GetMouseButtonDown(0))
+                    {
+
+                    }
+
+                    if (Input.GetMouseButtonDown(1))
+                    {
+
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
         // Debug
         if (Input.GetKeyDown (KeyCode.Return)) this.Save("bin", "crafting_table");
 	}
+
+
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect(0, 0, 100, 22), this.currentState == EditorState.Sculpting ? "Sculpting" : "Painting");
+    }
+
+
+
+    public void ChangeState()
+    {
+        if (this.currentState == EditorState.Sculpting)
+        {
+            this.currentState = EditorState.Painting;
+        }
+        else if (this.currentState == EditorState.Painting)
+        {
+            this.currentState = EditorState.Sculpting;
+        }
+    }
 
 
 
