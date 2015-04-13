@@ -60,7 +60,7 @@ public class Editor : MonoBehaviour {
         }
 
         // Debug
-        if (Input.GetKeyDown (KeyCode.Return)) this.Save("Export", "crafting_table");
+        if (Input.GetKeyDown (KeyCode.Return)) this.Save("bin", "crafting_table");
 	}
 
 
