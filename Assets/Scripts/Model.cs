@@ -33,12 +33,12 @@ public class Model : MonoBehaviour {
                         new JSON
                         {
                             { "from", box.min },
-                            { "to", box.max },
+                            { "to", (box.max + 1) },
                             //{ "shade", box.shade, true },
                             {
                                 "faces", new JSON
                                 {
-                                    { "up", new JSON { { "texture", "#up" }, { "cullface", "yp" } } },
+                                    { "up", new JSON { { "texture", "#up" }, { "cullface", "up" } } },
                                     { "down", new JSON { { "texture", "#down" }, { "cullface", "down" } } },
                                     { "north", new JSON { { "texture", "#north" }, { "cullface", "north" } } },
                                     { "south", new JSON { { "texture", "#south" }, { "cullface", "south" } } },
