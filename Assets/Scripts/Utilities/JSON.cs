@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 
 public class JSON : IEnumerable {
-	private Dictionary<string, object> objects = new Dictionary<string, object>();
+	private Dictionary<string, object> _objects = new Dictionary<string, object>();
 
 
 
 	public override string ToString() {
 		var json = "{";
-		foreach (var obj in objects) {
+		foreach (var obj in _objects) {
 			string key = obj.Key;
 			object value = obj.Value;
 			json += string.Format("\"{0}\":", key);
@@ -38,9 +38,43 @@ public class JSON : IEnumerable {
 
 
 
+    public object this[string index]
+    {
+        get
+        {
+            object value;
+            if (this._objects.TryGetValue(index, out value))
+            {
+                return value;
+            }
+            return null;
+        }
+        set
+        {
+            if (this._objects.ContainsKey(index))
+            {
+                this._objects.Remove(index);
+            }
+            this._objects.Add(index, value);
+        }
+    }
+
+
+
 	public void Add(string key, object value) {
-		objects.Add(key, value);
+        if (value == null) return;
+
+		_objects.Add(key, value);
 	}
+
+
+
+    public void Add(string key, object value, object defaultValue)
+    {
+        if (value == null || value.Equals(defaultValue)) return;
+
+        this._objects.Add(key, value);
+    }
 
 
 
