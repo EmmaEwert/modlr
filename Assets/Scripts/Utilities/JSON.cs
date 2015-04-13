@@ -12,13 +12,13 @@ public class JSON : IEnumerable {
 	
 	// Requires: Somewhat valid JSON object string
 	public JSON(string text) {
-		this.objects = (this.Parse(text.Trim().Trim(new[]{'{','}'})) as JSON).objects;
+		this.objects = (this.Parse(text) as JSON).objects;
 	}
 
 
 
 	public static object Parse(string text) {
-		return new JSON();
+		return null;
 	}
 
 
@@ -33,7 +33,7 @@ public class JSON : IEnumerable {
 				json += "[";
 				if (value is IEnumerable<object>) {
 					new List<object>(value as object[]).ForEach(o => json += o + ",");
-				} else if (value is IEnumerable<char>) {
+				} else if (value is IEnumerable<IEnumerable<char>>) {
 					new List<IEnumerable<char>>(value as IEnumerable<IEnumerable<char>>).ForEach(o => json += string.Format("\"{0}\",", o));
 				} else if (value is IEnumerable<int>) {
 					new List<int>(value as IEnumerable<int>).ForEach(o => json += o + ",");
