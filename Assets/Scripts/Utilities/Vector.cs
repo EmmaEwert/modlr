@@ -1,4 +1,6 @@
-﻿public class Vector {
+﻿using System.Collections.Generic;
+
+public class Vector {
 	public static Vector west  { get { return new Vector(-1,  0,  0); } }
 	public static Vector east  { get { return new Vector( 1,  0,  0); } }
 	public static Vector down  { get { return new Vector( 0, -1,  0); } }
@@ -84,7 +86,7 @@
 
 	
 	public override string ToString() {
-		return string.Format("(x:{0} y:{1}, z:{2})", this.x, this.y, this.z);
+		return string.Format("[{0},{1},{2}]", this.x, this.y, this.z);
 	}
 
 
