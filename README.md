@@ -89,6 +89,8 @@ linking.
 
 ### Face texture rotation
 
+### Animated texture support
+
 ## Changelog
 
 ### 0.0.0

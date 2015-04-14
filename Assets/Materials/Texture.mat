@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Hexaplanar
-  m_Shader: {fileID: 4800000, guid: d62661c801ff4c445a0d4700a3502c19, type: 3}
+  m_Name: Texture
+  m_Shader: {fileID: 10760, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
@@ -77,55 +77,6 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _SouthTex
-        second:
-          m_Texture: {fileID: 2800000, guid: fa187a8603d49c849bdc634d0a7531a5, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _TopTex
-        second:
-          m_Texture: {fileID: 2800000, guid: c46e3ff1eb6377f42a26fc276ac4f841, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _BottomTex
-        second:
-          m_Texture: {fileID: 2800000, guid: c46e3ff1eb6377f42a26fc276ac4f841, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _WestTex
-        second:
-          m_Texture: {fileID: 2800000, guid: 347230bd6ec0598428a2f9fb752bca32, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _EastTex
-        second:
-          m_Texture: {fileID: 2800000, guid: 347230bd6ec0598428a2f9fb752bca32, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _BackTex
-        second:
-          m_Texture: {fileID: 2800000, guid: 0046e240b5072b84083fa3fa78933111, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _NorthTex
-        second:
-          m_Texture: {fileID: 2800000, guid: 2632ad2913fb64c4cb639f8e4a86511d, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -150,7 +101,7 @@ Material:
       data:
         first:
           name: _Glossiness
-        second: 0
+        second: .5
       data:
         first:
           name: _BumpScale
@@ -179,6 +130,30 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _Stencil
+        second: 0
+      data:
+        first:
+          name: _StencilComp
+        second: 8
+      data:
+        first:
+          name: _StencilOp
+        second: 0
+      data:
+        first:
+          name: _StencilReadMask
+        second: 255
+      data:
+        first:
+          name: _StencilWriteMask
+        second: 255
+      data:
+        first:
+          name: _ColorMask
+        second: 15
     m_Colors:
       data:
         first:
