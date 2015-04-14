@@ -4,17 +4,12 @@ using System.Collections.Generic;
 
 public class Model : MonoBehaviour {
 	public GameObject boxPrefab;
-	
-	// Add initial 48x48x48 volume
-	public Block block = new Block();
 
-    private float time;
+	public Block block = new Block();
 
 
     private bool ambientocclusion = true;
-
-    private string parent;
-
+    private string parent = null;
     private Dictionary<string, string> textures = new Dictionary<string,string>();
 
 
@@ -56,8 +51,6 @@ public class Model : MonoBehaviour {
 
 
 	void Start() {
-		Debug.Log(new JSON("{\"elements\":[{\"from\":[0,0,0],\"to\":[15.5,15,5E-06],\"faces\":{\"down\":{\"texture\":\"#down\",\"cullface\":\"down\"},\"up\":{\"texture\":\"#up\",\"cullface\":\"up\"},\"north\":{\"texture\":\"#north\",\"cullface\":\"north\"},\"south\":{\"texture\":\"#south\",\"cullface\":\"south\"},\"west\":{\"texture\":\"#west\",\"cullface\":\"west\"},\"east\":{\"texture\":\"#east\",\"cullface\":\"east\"}}}]}"));
-
 		block.Add(new Box(16));
 
         this.textures = new Dictionary<string, string>();
@@ -75,8 +68,6 @@ public class Model : MonoBehaviour {
 
 
 	public void Rebuild() {
-		this.time = Time.realtimeSinceStartup;
-
 		foreach (Transform transform in this.transform) {
 			Destroy(transform.gameObject);
 		}
@@ -87,7 +78,5 @@ public class Model : MonoBehaviour {
 			transform.position = box.position;
 			transform.localScale = box.scale;
 		}
-		
-		Debug.Log(string.Format("Rebuild ({0:0.000} ms)", (UnityEngine.Time.realtimeSinceStartup - time) * 1000.0f));
 	}
 }
