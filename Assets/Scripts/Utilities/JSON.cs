@@ -2,13 +2,30 @@
 using System.Collections.Generic;
 
 public class JSON : IEnumerable {
-	private Dictionary<string, object> _objects = new Dictionary<string, object>();
+	private Dictionary<string, object> objects = new Dictionary<string, object>();
+
+
+
+	public JSON() { }
+
+
+	
+	// Requires: Somewhat valid JSON object string
+	public JSON(string text) {
+		// this.objects = (this.Parse(text) as JSON).objects;
+	}
+
+
+
+	public static object Parse(string text) {
+		return null;
+	}
 
 
 
 	public override string ToString() {
 		var json = "{";
-		foreach (var obj in _objects) {
+		foreach (var obj in this.objects) {
 			string key = obj.Key;
 			object value = obj.Value;
 			json += string.Format("\"{0}\":", key);
@@ -52,7 +69,7 @@ public class JSON : IEnumerable {
         get
         {
             object value;
-            if (this._objects.TryGetValue(index, out value))
+            if (this.objects.TryGetValue(index, out value))
             {
                 return value;
             }
@@ -60,11 +77,11 @@ public class JSON : IEnumerable {
         }
         set
         {
-            if (this._objects.ContainsKey(index))
+            if (this.objects.ContainsKey(index))
             {
-                this._objects.Remove(index);
+                this.objects.Remove(index);
             }
-            this._objects.Add(index, value);
+            this.objects.Add(index, value);
         }
     }
 
@@ -73,7 +90,7 @@ public class JSON : IEnumerable {
 	public void Add(string key, object value) {
         if (value == null) return;
 
-		_objects.Add(key, value);
+		this.objects.Add(key, value);
 	}
 
 
@@ -82,7 +99,7 @@ public class JSON : IEnumerable {
     {
         if (value == null || value.Equals(defaultValue)) return;
 
-        this._objects.Add(key, value);
+        this.objects.Add(key, value);
     }
 
 

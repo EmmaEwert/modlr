@@ -11,6 +11,15 @@ Model/Texture Editor for Minecraft.
 * Space to orbit up
 * Shift to orbit down
 * ~~Scroll to change brush size~~
+* ~~Tab to toggle Sculpting/Painting~~
+* ~~E to open blocks inventory~~
+* ~~T to open textures inventory~~
+* ~~F1 to toggle UI~~
+* ~~F2 to take a screenshot~~
+* ~~F3 to show block box composition~~
+* ~~F7 to toggle grid~~
+
+* Bottom hotbar holds 9 selected materials
 
 ### Sculpting
 
@@ -88,6 +97,8 @@ Mirror and/or rotate modification applications. Ties in with face texture
 linking.
 
 ### Face texture rotation
+
+### Animated texture support
 
 ## Changelog
 
