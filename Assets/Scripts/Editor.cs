@@ -19,8 +19,9 @@ public class Editor : MonoBehaviour {
   
   public Transform focus;
   public Model model;
-  public RectTransform texturePanel;
-  public Image texturePrefab;
+  public GameObject inventory;
+  public RectTransform texturesInventory;
+  public RawImage inventoryTexturePrefab;
   public List<Toggle> textureToggles;
   
   public Direction side {
@@ -87,6 +88,13 @@ public class Editor : MonoBehaviour {
     }
   }
   
+  private Texture texture {
+    set {
+      this.textureToggles[(int)this.side].GetComponentInChildren<RawImage>().texture = value;
+      this.model.materials[this.side].mainTexture = value;
+    }
+  }
+  
   private float zoom = 32.0f;
   private string _folder;
   private Dictionary<string, Texture2D> _textures;
@@ -99,14 +107,27 @@ public class Editor : MonoBehaviour {
     
     this.textureToggles[(int)this.side].isOn = true;
     
+    // Insert textures into inventory
     foreach (var texture in this.textures) {
-      Debug.Log(texture.Key);
+      var image = Instantiate<RawImage>(this.inventoryTexturePrefab);
+      image.transform.SetParent(this.texturesInventory);
+      image.transform.localScale = Vector3.one;
+      image.name = texture.Key;
+      image.texture = texture.Value;
+      image.uvRect = Rect.MinMaxRect(0, 0, 1.0f / (texture.Value.width / 16), 1.0f / (texture.Value.height / 16));
+      var button = image.GetComponent<Button>();
+      button.onClick.AddListener(() => this.texture = image.texture);
+      // TODO: Animated textures
     }
+    
+    this.model.block.Add(new Box(16));
+    this.model.Rebuild();
   }
 
 
 
   void Update() {
+    // Camera movement
     float horizontal = Input.GetAxis("Horizontal");
     float vertical = Input.GetAxis("Vertical");
     float normal = Input.GetAxis("Normal"); // Zoom
@@ -123,27 +144,34 @@ public class Editor : MonoBehaviour {
       this.transform.position = this.focus.position - this.transform.forward * this.zoom;
       this.textureToggles[(int)this.side].isOn = true;
     }
-
-        
+    
+    
     // Editing of Model
     var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     RaycastHit hit;
 
     if (Physics.Raycast(ray, out hit)) {
-      if (Input.GetMouseButtonDown(0)) {
+      if (Input.GetButtonDown("Pick")) {
         hit.point -= hit.normal * 0.5f;
         this.model.block.Remove(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
 
         this.model.Rebuild();
       }
 
-      if (Input.GetMouseButtonDown(1)) {
+      if (Input.GetButtonDown("Apply")) {
         hit.point += hit.normal * 0.5f;
         this.model.block.Add(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
 
         this.model.Rebuild();
       }
     }
+    
+    
+    // UI
+    if (Input.GetButtonDown("Inventory")) {
+      this.inventory.SetActive(!this.inventory.activeSelf);
+    }
+
 
     // Debug
     if (Input.GetKeyDown(KeyCode.Return)) {
@@ -161,6 +189,12 @@ public class Editor : MonoBehaviour {
   public void Save(string filePath, string fileName) {
     Directory.CreateDirectory(filePath);
     File.WriteAllText(filePath + "/" + fileName + ".json", this.model.json);
+  }
+  
+  
+  
+  public void SetTexture(RawImage image) {
+    
   }
 
 

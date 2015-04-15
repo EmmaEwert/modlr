@@ -4,7 +4,9 @@ using System.Collections.Generic;
 
 public class Model : MonoBehaviour {
   public GameObject boxPrefab;
+  public Material material;
   public Block block = new Block();
+  public Dictionary<Editor.Direction, Material> materials = new Dictionary<Editor.Direction, Material>();
   
   private bool ambientocclusion = true;
   private string parent = null;
@@ -37,11 +39,20 @@ public class Model : MonoBehaviour {
       }.ToString();
     }
   }
+  
+  
+  
+  void Awake() {
+    // TODO: Load materials lazily through accessors
+    // FIXME: Single-box block models have their UVs offset by (-.5, -.5)
+    foreach (Editor.Direction direction in System.Enum.GetValues(typeof(Editor.Direction))) {
+      this.materials[direction] = new Material(this.material);
+    }
+  }
 
 
 
   void Start() {
-    this.block.Add(new Box(16));
     
     this.textures = new Dictionary<string, string>();
     this.textures["particle"] = "blocks/crafting_table_front";
@@ -51,8 +62,6 @@ public class Model : MonoBehaviour {
     this.textures["west"] = "blocks/crafting_table_front";
     this.textures["south"] = "blocks/crafting_table_side";
     this.textures["east"] = "blocks/crafting_table_side";
-
-    this.Rebuild();
   }
 
 
@@ -67,6 +76,9 @@ public class Model : MonoBehaviour {
       transform.parent = this.transform;
       transform.position = box.position;
       transform.localScale = box.scale;
+      foreach (Editor.Direction direction in System.Enum.GetValues(typeof(Editor.Direction))) {
+        transform.Find(direction.ToString()).GetComponent<MeshRenderer>().sharedMaterial = this.materials[direction];
+      }
     }
   }
 }

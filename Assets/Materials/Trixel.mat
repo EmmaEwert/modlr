@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Hexaplanar
-  m_Shader: {fileID: 4800000, guid: d62661c801ff4c445a0d4700a3502c19, type: 3}
+  m_Name: Trixel
+  m_Shader: {fileID: 4800000, guid: f9234465dc630df48aef40067d7013f4, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
