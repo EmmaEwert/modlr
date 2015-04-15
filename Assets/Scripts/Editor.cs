@@ -59,16 +59,49 @@ public class Editor : MonoBehaviour {
     }
   }
 
-
-
+  private Dictionary<string, Texture2D> textures {
+    get {
+      if (this._textures == null) {
+        this._textures = new Dictionary<string, Texture2D>();
+        var jar = OpenJAR();
+        var folder = "assets/minecraft/textures/";
+        var extension = ".png";
+        foreach (ZipEntry entry in jar) {
+          var name = entry.Name;
+          if (name.StartsWith(folder + "blocks") && name.EndsWith(extension, true, null)) {
+            var stream = jar.GetInputStream(entry);
+            var memory = new MemoryStream(4096);
+            var buffer = new byte[4096];
+            StreamUtils.Copy(stream, memory, buffer);
+            var texture = new Texture2D(16, 16, TextureFormat.ARGB32, false, true);
+            if (texture.LoadImage(memory.ToArray())) {
+              texture.filterMode = FilterMode.Point;
+              texture.wrapMode = TextureWrapMode.Clamp;
+              name = name.Substring(folder.Length, name.Length - folder.Length - extension.Length);
+              this._textures[name] = texture;
+            }
+          }
+        }
+      }
+      return this._textures;
+    }
+  }
+  
   private float zoom = 32.0f;
   private string _folder;
+  private Dictionary<string, Texture2D> _textures;
 
 
 
   void Start() {
     this.transform.LookAt(focus.position, Vector3.up);
     this.transform.position = this.focus.position - this.transform.forward * this.zoom;
+    
+    this.textureToggles[(int)this.side].isOn = true;
+    
+    foreach (var texture in this.textures) {
+      Debug.Log(texture.Key);
+    }
   }
 
 
@@ -115,40 +148,6 @@ public class Editor : MonoBehaviour {
     // Debug
     if (Input.GetKeyDown(KeyCode.Return)) {
       this.Save("Export", "crafting_table");
-    }
-
-    if (Input.GetKeyDown(KeyCode.Backspace)) {
-      this.Load(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "/.minecraft/versions/1.8.3/1.8.3.jar");
-    }
-  }
-
-
-
-  /// <summary>
-  /// Loads a model from a JSON string and loads it into the editor
-  /// </summary>
-  /// <param name="filePathAndName">The File Path and File Name to read from</param>
-  // TODO: Store unpacked files locally as atlas for quick relaunch
-  // TODO: Asynchronous unpacking
-  public void Load(string filename) {
-    var jar = OpenJAR();
-    foreach (ZipEntry entry in jar) {
-      var name = entry.Name;
-      if (name.EndsWith(".png", true, null)) {
-        var stream = jar.GetInputStream(entry);
-        var memory = new MemoryStream(4096);
-        var buffer = new byte[4096];
-        StreamUtils.Copy(stream, memory, buffer);
-        var texture = new Texture2D(256, 256, TextureFormat.ARGB32, false, true);
-        if (texture.LoadImage(memory.ToArray())) {
-          texture.filterMode = FilterMode.Point;
-          texture.wrapMode = TextureWrapMode.Clamp;
-          var textureImage = Instantiate<Image>(this.texturePrefab);
-          textureImage.GetComponent<RectTransform>().SetParent(this.texturePanel);
-          textureImage.sprite = Sprite.Create(texture, new Rect(0, 0, 16, 16), Vector2.one * 0.5f);
-          // GameObject.Find("Front").GetComponent<MeshRenderer>().sharedMaterial.mainTexture = texture;
-        }
-      }
     }
   }
 
