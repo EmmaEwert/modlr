@@ -2,18 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Model : MonoBehaviour {	
+public class Model : MonoBehaviour {
 
-    private float time;
+  private float time;
 
   public GameObject boxPrefab;
   public Block block = new Block();
   public Material material;
   public Dictionary<Editor.Direction, Material> materials = new Dictionary<Editor.Direction, Material>();
-  
+
   private bool ambientocclusion = true;
   private string parent = null;
-  private Dictionary<string, string> textures = new Dictionary<string,string>();
+  private Dictionary<string, string> textures = new Dictionary<string, string>();
 
 
 
@@ -42,9 +42,9 @@ public class Model : MonoBehaviour {
       }.ToString();
     }
   }
-  
-  
-  
+
+
+
   void Awake() {
     // TODO: Load materials lazily through accessors
     // FIXME: Single-box block models have their UVs offset by (-.5, -.5)
@@ -55,18 +55,18 @@ public class Model : MonoBehaviour {
 
 
 
-	void Start() {
-		block.Add(new Box(16));
+  void Start() {
+    block.Add(new Box(16));
 
-        this.textures = new Dictionary<string, string>();
-        this.textures["particle"] = "blocks/crafting_table_front";
-        this.textures["up"] = "blocks/crafting_table_top";
-        this.textures["down"] = "blocks/planks_oak";
-        this.textures["side1"] = "blocks/crafting_table_front";
-        this.textures["side2"] = "blocks/crafting_table_side";
+    this.textures = new Dictionary<string, string>();
+    this.textures["particle"] = "blocks/crafting_table_front";
+    this.textures["up"] = "blocks/crafting_table_top";
+    this.textures["down"] = "blocks/planks_oak";
+    this.textures["side1"] = "blocks/crafting_table_front";
+    this.textures["side2"] = "blocks/crafting_table_side";
 
-		this.Rebuild();
-	}
+    this.Rebuild();
+  }
 
 
 
