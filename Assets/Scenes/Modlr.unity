@@ -949,47 +949,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 426896408}
---- !u!1 &443438499
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 443438500}
-  - 114: {fileID: 443438501}
-  m_Layer: 0
-  m_Name: Model
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &443438500
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 443438499}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8, y: 8, z: 8}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
---- !u!114 &443438501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 443438499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab38b848a95aefc4f8022e3f95b14d8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boxPrefab: {fileID: 122556, guid: ae10e23206255534b81882eb62a47340, type: 2}
-  material: {fileID: 2100000, guid: 61059d8d6e27128478adca2e7e10004d, type: 2}
 --- !u!1 &555625769
 GameObject:
   m_ObjectHideFlags: 0
@@ -2908,8 +2867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b152e23ae90afa49956588ef0f36211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focus: {fileID: 443438500}
-  model: {fileID: 443438501}
+  focus: {fileID: 0}
   inventory: {fileID: 2139040867}
   texturesInventory: {fileID: 115362148}
   inventoryTexturePrefab: {fileID: 11468710, guid: dfb7403738cdff74f8a26f4acffd847a,

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ public class Editor : MonoBehaviour {
   }
   
   public Transform focus;
-  public Model model;
+  // public Model model;
   public GameObject inventory;
   public RectTransform texturesInventory;
   public RawImage inventoryTexturePrefab;
@@ -91,13 +92,14 @@ public class Editor : MonoBehaviour {
   private Texture texture {
     set {
       this.textureToggles[(int)this.side].GetComponentInChildren<RawImage>().texture = value;
-      this.model.materials[this.side].mainTexture = value;
+      // this.model.materials[this.side].mainTexture = value;
     }
   }
   
   private float zoom = 32.0f;
   private string _folder;
   private Dictionary<string, Texture2D> _textures;
+  private Dictionary<string, Block> _blocks;
 
 
 
@@ -120,8 +122,13 @@ public class Editor : MonoBehaviour {
       // TODO: Animated textures
     }
     
-    this.model.block.Add(new Box(16));
-    this.model.Rebuild();
+    // this.model.block.Add(new Box(16));
+    // this.model.Rebuild();
+    
+    // Debug
+    var block = Block.Load("brewing_stand");
+    Debug.Log(string.Format("Block: {0}", block));
+    Debug.Log(string.Format("Model: {0}", Model.Load("block/brewing_stand_bottles_123")));
   }
 
 
@@ -153,16 +160,16 @@ public class Editor : MonoBehaviour {
     if (Physics.Raycast(ray, out hit)) {
       if (Input.GetButtonDown("Pick")) {
         hit.point -= hit.normal * 0.5f;
-        this.model.block.Remove(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
+        // this.model.block.Remove(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
 
-        this.model.Rebuild();
+        // this.model.Rebuild();
       }
 
       if (Input.GetButtonDown("Apply")) {
         hit.point += hit.normal * 0.5f;
-        this.model.block.Add(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
+        // this.model.block.Add(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
 
-        this.model.Rebuild();
+        // this.model.Rebuild();
       }
     }
     
@@ -188,7 +195,7 @@ public class Editor : MonoBehaviour {
   /// <param name="fileName">The File Name to write to </param>
   public void Save(string filePath, string fileName) {
     Directory.CreateDirectory(filePath);
-    File.WriteAllText(filePath + "/" + fileName + ".json", this.model.json);
+    // File.WriteAllText(filePath + "/" + fileName + ".json", this.model.json);
   }
   
   
