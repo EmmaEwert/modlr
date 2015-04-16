@@ -23,7 +23,7 @@
     void vert(inout appdata_full v, out Input o) {
       UNITY_INITIALIZE_OUTPUT(Input, o);
       o.position = mul(_Object2World, v.vertex.xyz) / 16.0f;
-	  minuspos = float2(1, 2 * o.position.y).xyx - o.position;
+	  o.minuspos = o.position * float2(-1,1).xyx;
     }
     
     void surf(Input i, inout SurfaceOutputStandard o) {

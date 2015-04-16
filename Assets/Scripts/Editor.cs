@@ -96,7 +96,7 @@ public class Editor : MonoBehaviour {
             var texture = new Texture2D(16, 16, TextureFormat.ARGB32, false, true);
             if (texture.LoadImage(memory.ToArray())) {
               texture.filterMode = FilterMode.Point;
-              texture.wrapMode = TextureWrapMode.Clamp;
+              texture.wrapMode = TextureWrapMode.Repeat;
               name = name.Substring(folder.Length, name.Length - folder.Length - extension.Length);
               this._textures[name] = texture;
             }
@@ -194,18 +194,21 @@ public class Editor : MonoBehaviour {
             // Get the color on the boxS
             Texture2D texture = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
 
-            Vector2 uv = hit.textureCoord * 16.0F;
-            Debug.Log("Get Pixel Color from coords: " + uv);
+            var uv = Vector2.Scale(hit.textureCoord, new Vector2(hit.transform.localScale.x, hit.transform.localScale.y));
 
-            this.paintColor = texture.GetPixel(Mathf.RoundToInt(uv.x), Mathf.RoundToInt(uv.y));
+            Debug.Log(hit.transform.name);
+
+            this.paintColor = texture.GetPixel(Mathf.FloorToInt(uv.x), Mathf.FloorToInt(uv.y));
           }
           
           if (Input.GetMouseButtonDown(1)) {
             // Paint the selected color on the box
             Texture2D texture = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
 
-            Vector2 uv = hit.textureCoord * 16.0F;
-            Debug.Log("Set Pixel Color at coords: " + uv);
+            var uv = Vector2.Scale(hit.textureCoord, new Vector2(hit.transform.localScale.x, hit.transform.localScale.y));
+
+            Debug.Log(hit.transform.name);
+            Debug.Log(uv);
 
             texture.SetPixel(Mathf.FloorToInt(uv.x), Mathf.FloorToInt(uv.y), this.paintColor);
             texture.Apply();
