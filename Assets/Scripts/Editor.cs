@@ -30,6 +30,7 @@ public class Editor : MonoBehaviour {
 
   private EditorState currentState = EditorState.Sculpting;
 
+  public Text mode;
 
   // Painting variables
   private Color paintColor;
@@ -126,6 +127,8 @@ public class Editor : MonoBehaviour {
 
     this.textureToggles[(int)this.side].isOn = true;
 
+    this.mode.text = this.currentState.ToString();
+
     // Insert textures into inventory
     foreach (var texture in this.textures) {
       var image = Instantiate<RawImage>(this.inventoryTexturePrefab);
@@ -188,15 +191,15 @@ public class Editor : MonoBehaviour {
           break;
         case EditorState.Painting:
           if (Input.GetMouseButtonDown(0)) {
-            // Get the color on the box
+            // Get the color on the boxS
             Texture2D texture = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
 
             Vector2 uv = hit.textureCoord * 16.0F;
             Debug.Log("Get Pixel Color from coords: " + uv);
 
-            this.paintColor = texture.GetPixel(Mathf.FloorToInt(uv.x), Mathf.FloorToInt(uv.y));
+            this.paintColor = texture.GetPixel(Mathf.RoundToInt(uv.x), Mathf.RoundToInt(uv.y));
           }
-
+          
           if (Input.GetMouseButtonDown(1)) {
             // Paint the selected color on the box
             Texture2D texture = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
@@ -234,6 +237,7 @@ public class Editor : MonoBehaviour {
     } else if (this.currentState == EditorState.Painting) {
       this.currentState = EditorState.Sculpting;
     }
+    this.mode.text = this.currentState.ToString();
   }
 
 
