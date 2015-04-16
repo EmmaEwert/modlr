@@ -18,8 +18,6 @@ public class Editor : MonoBehaviour {
     North
   }
   
-  public Transform focus;
-  // public Model model;
   public GameObject inventory;
   public RectTransform texturesInventory;
   public RawImage inventoryTexturePrefab;
@@ -39,28 +37,7 @@ public class Editor : MonoBehaviour {
     }
   }
 
-  public string folder {
-    get {
-      if (this._folder == null) {
-        this._folder = Environment.CurrentDirectory;
-        var separator = Path.DirectorySeparatorChar;
-
-        switch (Environment.OSVersion.Platform) {
-          case PlatformID.Unix:
-            this._folder = string.Format("{0}{1}.minecraft{1}", Environment.GetFolderPath(Environment.SpecialFolder.Personal), separator);
-            break;
-          case PlatformID.MacOSX:
-            this._folder = string.Format("{0}{1}Library{1}Application Support{1}minecraft{1}", Environment.GetFolderPath(Environment.SpecialFolder.Personal), separator);
-            break;
-          case PlatformID.Win32NT:
-            this._folder = string.Format("{0}{1}.minecraft{1}", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), separator);
-            break;
-        }
-      }
-      return this._folder;
-    }
-  }
-
+  /*
   private Dictionary<string, Texture2D> textures {
     get {
       if (this._textures == null) {
@@ -88,47 +65,31 @@ public class Editor : MonoBehaviour {
       return this._textures;
     }
   }
+  */
   
   private Texture texture {
     set {
       this.textureToggles[(int)this.side].GetComponentInChildren<RawImage>().texture = value;
-      // this.model.materials[this.side].mainTexture = value;
     }
   }
   
   private float zoom = 32.0f;
   private string _folder;
   private Dictionary<string, Texture2D> _textures;
-  private Dictionary<string, Block> _blocks;
 
 
 
   void Start() {
-    this.transform.LookAt(focus.position, Vector3.up);
-    this.transform.position = this.focus.position - this.transform.forward * this.zoom;
+    this.transform.LookAt(Vector3.zero, Vector3.up);
+    this.transform.position = Vector3.zero - this.transform.forward * this.zoom;
     
     this.textureToggles[(int)this.side].isOn = true;
     
-    // Insert textures into inventory
-    foreach (var texture in this.textures) {
-      var image = Instantiate<RawImage>(this.inventoryTexturePrefab);
-      image.transform.SetParent(this.texturesInventory);
-      image.transform.localScale = Vector3.one;
-      image.name = texture.Key;
-      image.texture = texture.Value;
-      image.uvRect = Rect.MinMaxRect(0, 0, 1.0f / (texture.Value.width / 16), 1.0f / (texture.Value.height / 16));
-      var button = image.GetComponent<Button>();
-      button.onClick.AddListener(() => this.texture = image.texture);
-      // TODO: Animated textures
-    }
-    
-    // this.model.block.Add(new Box(16));
-    // this.model.Rebuild();
     
     // Debug
     var block = Block.Load("brewing_stand");
-    Debug.Log(string.Format("Block: {0}", block));
-    Debug.Log(string.Format("Model: {0}", Model.Load("block/brewing_stand_bottles_123")));
+    
+    this.Spawn(block);
   }
 
 
@@ -141,14 +102,14 @@ public class Editor : MonoBehaviour {
 
     if (normal != 0.0f) {
       this.zoom -= (1.0f + 1.0f / 256.0f) * normal;
-      this.transform.LookAt(focus.position, Vector3.up);
-      this.transform.position = this.focus.position - this.transform.forward * this.zoom;
+      this.transform.LookAt(Vector3.zero, Vector3.up);
+      this.transform.position = Vector3.zero - this.transform.forward * this.zoom;
     }
 
     if (horizontal != 0.0f || vertical != 0.0f) {
       this.transform.Translate(Vector3.right * horizontal * this.zoom / 32.0f + Vector3.up * vertical * this.zoom / 32.0f);
-      this.transform.LookAt(focus.position, Vector3.up);
-      this.transform.position = this.focus.position - this.transform.forward * this.zoom;
+      this.transform.LookAt(Vector3.zero, Vector3.up);
+      this.transform.position = Vector3.zero - this.transform.forward * this.zoom;
       this.textureToggles[(int)this.side].isOn = true;
     }
     
@@ -160,16 +121,10 @@ public class Editor : MonoBehaviour {
     if (Physics.Raycast(ray, out hit)) {
       if (Input.GetButtonDown("Pick")) {
         hit.point -= hit.normal * 0.5f;
-        // this.model.block.Remove(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
-
-        // this.model.Rebuild();
       }
 
       if (Input.GetButtonDown("Apply")) {
         hit.point += hit.normal * 0.5f;
-        // this.model.block.Add(new Box(new Vector(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y), Mathf.FloorToInt(hit.point.z))));
-
-        // this.model.Rebuild();
       }
     }
     
@@ -178,54 +133,27 @@ public class Editor : MonoBehaviour {
     if (Input.GetButtonDown("Inventory")) {
       this.inventory.SetActive(!this.inventory.activeSelf);
     }
-
-
-    // Debug
-    if (Input.GetKeyDown(KeyCode.Return)) {
-      this.Save("Export", "crafting_table");
-    }
-  }
-
-
-
-  /// <summary>
-  /// Saves the model into a JSON string and writes to the given file
-  /// </summary>
-  /// <param name="filePath">The File Path to write the file to</param>
-  /// <param name="fileName">The File Name to write to </param>
-  public void Save(string filePath, string fileName) {
-    Directory.CreateDirectory(filePath);
-    // File.WriteAllText(filePath + "/" + fileName + ".json", this.model.json);
   }
   
   
   
-  public void SetTexture(RawImage image) {
-    
-  }
-
-
-
-  // Open most recent Minecraft JAR
-  // TODO: Read <version>.json instead to determine most recent
-  private ZipFile OpenJAR() {
-    var folders = new List<DirectoryInfo>(new System.IO.DirectoryInfo(string.Format("{0}versions", this.folder)).GetDirectories());
-    folders.Reverse();
-
-    foreach (var folder in folders) {
-      var version = folder.Name;
-      if (version.StartsWith("1.")) {
-        return OpenJAR(string.Format("{0}{1}{2}.jar", folder.FullName, Path.DirectorySeparatorChar, version));
+  void Spawn(Block block) {
+    foreach (Block.Variant variant in block.variants.Values) {
+      if (variant.model != null) {
+        Model model = variant.model;
+        while (model.parent != null) {
+          model = model.parent;
+        }
+        foreach (Model.Element element in model.elements) {
+          Transform cube = GameObject.CreatePrimitive(PrimitiveType.Cube).transform;
+          cube.localScale = (element.to - element.from).vector3;
+          cube.localPosition = element.from.vector3 + (element.to - element.from).vector3 / 2.0f;
+          if (element.rotation != null) {
+            cube.RotateAround(element.rotation.origin.vector3, Vector3.up, element.rotation.angle);
+          }
+        }
+        break;
       }
     }
-
-    return null;
-  }
-
-
-
-  private ZipFile OpenJAR(string filename) {
-    var stream = File.OpenRead(filename);
-    return new ZipFile(stream);
   }
 }

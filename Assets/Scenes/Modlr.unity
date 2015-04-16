@@ -2867,7 +2867,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b152e23ae90afa49956588ef0f36211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focus: {fileID: 0}
   inventory: {fileID: 2139040867}
   texturesInventory: {fileID: 115362148}
   inventoryTexturePrefab: {fileID: 11468710, guid: dfb7403738cdff74f8a26f4acffd847a,

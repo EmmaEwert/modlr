@@ -38,6 +38,8 @@ public class Model : Asset<Model> {
       public int y;
       public int z;
       
+      public UnityEngine.Vector3 vector3 { get { return new UnityEngine.Vector3(this.x, this.y, this.z); } }
+      
       public Vector(int x, int y, int z) {
         this.x = x;
         this.y = y;
@@ -48,6 +50,10 @@ public class Model : Asset<Model> {
         this.x = (int)x;
         this.y = (int)y;
         this.z = (int)z;
+      }
+      
+      public static Vector operator-(Vector a, Vector b) {
+        return new Vector(a.x - b.x, a.y - b.y, a.z - b.z);
       }
       
       public class Converter : JsonConverter {
