@@ -194,9 +194,8 @@ public class Editor : MonoBehaviour {
             // Get the color on the boxS
             Texture2D texture = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
 
-            var uv = Vector2.Scale(hit.textureCoord, new Vector2(hit.transform.localScale.x, hit.transform.localScale.y));
-
-            Debug.Log(hit.transform.name);
+            Vector3 scale = Quaternion.FromToRotation(hit.transform.parent.forward, hit.transform.forward) * hit.transform.parent.localScale;
+            Vector2 uv = Vector2.Scale(hit.textureCoord, new Vector2(scale.x, scale.y));
 
             this.paintColor = texture.GetPixel(Mathf.FloorToInt(uv.x), Mathf.FloorToInt(uv.y));
           }
@@ -205,7 +204,8 @@ public class Editor : MonoBehaviour {
             // Paint the selected color on the box
             Texture2D texture = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
 
-            var uv = Vector2.Scale(hit.textureCoord, new Vector2(hit.transform.localScale.x, hit.transform.localScale.y));
+            Vector3 scale = Quaternion.FromToRotation(hit.transform.parent.forward, hit.transform.forward) * hit.transform.parent.localScale;
+            Vector2 uv = Vector2.Scale(hit.textureCoord, new Vector2(scale.x, scale.y));
 
             Debug.Log(hit.transform.name);
             Debug.Log(uv);
