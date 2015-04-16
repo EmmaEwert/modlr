@@ -84,12 +84,6 @@ public class Editor : MonoBehaviour {
     this.transform.position = Vector3.zero - this.transform.forward * this.zoom;
     
     this.textureToggles[(int)this.side].isOn = true;
-    
-    
-    // Debug
-    var block = Block.Load("brewing_stand");
-    
-    this.Spawn(block);
   }
 
 
@@ -132,28 +126,6 @@ public class Editor : MonoBehaviour {
     // UI
     if (Input.GetButtonDown("Inventory")) {
       this.inventory.SetActive(!this.inventory.activeSelf);
-    }
-  }
-  
-  
-  
-  void Spawn(Block block) {
-    foreach (Block.Variant variant in block.variants.Values) {
-      if (variant.model != null) {
-        Model model = variant.model;
-        while (model.parent != null) {
-          model = model.parent;
-        }
-        foreach (Model.Element element in model.elements) {
-          Transform cube = GameObject.CreatePrimitive(PrimitiveType.Cube).transform;
-          cube.localScale = (element.to - element.from).vector3;
-          cube.localPosition = element.from.vector3 + (element.to - element.from).vector3 / 2.0f;
-          if (element.rotation != null) {
-            cube.RotateAround(element.rotation.origin.vector3, Vector3.up, element.rotation.angle);
-          }
-        }
-        break;
-      }
     }
   }
 }

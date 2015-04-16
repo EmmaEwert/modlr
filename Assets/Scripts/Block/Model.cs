@@ -88,7 +88,7 @@ public class Model : Asset<Model> {
     
     
     public class Face {
-      public int[] uv;
+      public float[] uv;
       public string cullface;
       public int rotation;
       public int tintindex;
@@ -105,7 +105,9 @@ public class Model : Asset<Model> {
     public override object ReadJson(JsonReader reader, Type type, object value, JsonSerializer serializer) {
       string name = JToken.ReadFrom(reader).ToString();
       Model model = Model.Load("models", name);
-      model.name = name;
+      if (model != null) {
+        model.name = name;
+      }
       return model;
     }
     

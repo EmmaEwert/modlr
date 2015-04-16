@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using ICSharpCode.SharpZipLib.Core;
@@ -6,7 +7,8 @@ using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 
 public abstract class Asset<T> {
-  protected static Dictionary<string, T> cache = new Dictionary<string, T>();
+  [NonSerialized]
+  public static Dictionary<string, T> cache;
   
   private static JsonSerializerSettings settings = new JsonSerializerSettings {
     DefaultValueHandling = DefaultValueHandling.Ignore,
@@ -38,16 +40,64 @@ public abstract class Asset<T> {
   
   
   
-  protected static T Load(string path, string name) {
-    T t;
+  public static void Preload() {
+    Block.Preload("blockstates");
+  }
+  
+  
+  
+  // TODO: Preload all models before calling Load() for submodels (how?)
+  // TODO: Load asynchronously
+  // TODO: Load resourcepacks, mod assets and modlr projects
+  protected static void Preload(string path) {
+    Asset<T>.cache = new Dictionary<string, T>();
     
+    ZipFile jar = null;
+    var folders = new List<DirectoryInfo>(new System.IO.DirectoryInfo(string.Format("{0}versions", Asset<T>.folder)).GetDirectories()); folders.Reverse();
     
-    if (Asset<T>.cache.TryGetValue(name, out t)) {
-      UnityEngine.Debug.Log(string.Format("Cache HIT\n{0}/{1}", path, name));
-      return t;
+    foreach (DirectoryInfo folder in folders) {
+      string version = folder.Name;
+      if (version.StartsWith("1.")) {
+        string source = string.Format("{0}{1}{2}.jar", folder.FullName, Path.DirectorySeparatorChar, version);
+        jar = new ZipFile(File.OpenRead(source));
+        break;
+      }
     }
     
-    UnityEngine.Debug.Log(string.Format("Cache MISS\n{0}/{1}", path, name));
+    if (jar == null) {
+      return;
+    }
+    
+    string prefix = string.Format("assets/minecraft/{0}/", path);
+    
+    foreach (ZipEntry entry in jar) {
+      if (entry.Name.StartsWith(prefix)) {
+        string filename = entry.Name.Remove(0, prefix.Length);
+        if (filename.EndsWith(".json")) {
+          string name = filename.Remove(filename.Length - ".json".Length, ".json".Length);
+          if (!Asset<T>.cache.ContainsKey(name)) {
+            Stream stream = jar.GetInputStream(entry);
+            Asset<T>.cache[name] = JsonConvert.DeserializeObject<T>(new StreamReader(stream).ReadToEnd(), Asset<T>.settings);
+          }
+        }
+      }
+    }
+    
+    jar.Close();
+  }
+  
+  
+  
+  protected static T Load(string path, string name) {
+    if (Asset<T>.cache == null) {
+      Asset<T>.Preload(path);
+    }
+    
+    T t;
+    
+    if (name.StartsWith("builtin/") || Asset<T>.cache.TryGetValue(name, out t)) {
+      return t;
+    }
     
     ZipFile jar = null;
     var folders = new List<DirectoryInfo>(new System.IO.DirectoryInfo(string.Format("{0}versions", Asset<T>.folder)).GetDirectories());
@@ -77,11 +127,14 @@ public abstract class Asset<T> {
           case ".json":
             t = JsonConvert.DeserializeObject<T>(new StreamReader(stream).ReadToEnd(), Asset<T>.settings);
             Asset<T>.cache[name] = t;
+            jar.Close();
             return t;
         }
         break;
       }
     }
+    
+    jar.Close();
     
     return default (T);
   }
