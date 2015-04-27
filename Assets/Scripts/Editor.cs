@@ -194,23 +194,23 @@ public class Editor : MonoBehaviour {
             // Get the color on the boxS
             Texture2D texture = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
 
-            Vector3 scale = Quaternion.FromToRotation(hit.transform.parent.forward, hit.transform.forward) * hit.transform.parent.localScale;
-            Vector2 uv = Vector2.Scale(hit.textureCoord, new Vector2(scale.x, scale.y));
+            Vector2 uv = this.GetUV(hit);
 
-            this.paintColor = texture.GetPixel(Mathf.FloorToInt(uv.x), Mathf.FloorToInt(uv.y));
+            this.paintColor = texture.GetPixel((int)uv.x, (int)uv.y);
           }
           
           if (Input.GetMouseButtonDown(1)) {
             // Paint the selected color on the box
             Texture2D texture = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
 
-            Vector3 scale = Quaternion.FromToRotation(hit.transform.parent.forward, hit.transform.forward) * hit.transform.parent.localScale;
-            Vector2 uv = Vector2.Scale(hit.textureCoord, new Vector2(scale.x, scale.y));
+            Vector2 uv = this.GetUV(hit);
+
+            Debug.Log(texture);
 
             Debug.Log(hit.transform.name);
             Debug.Log(uv);
 
-            texture.SetPixel(Mathf.FloorToInt(uv.x), Mathf.FloorToInt(uv.y), this.paintColor);
+            texture.SetPixel((int)uv.x, (int)uv.y, this.paintColor);
             texture.Apply();
           }
           break;
@@ -228,8 +228,23 @@ public class Editor : MonoBehaviour {
 
     // Debug
     if (Input.GetKeyDown(KeyCode.Return)) {
-      this.Save("Export", "crafting_table");
+      this.Save("bin", "crafting_table");
     }
+  }
+
+
+
+  private Vector2 GetUV(RaycastHit hit) {
+    Texture2D tex = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
+    Vector2 uv;
+
+    uv.x = (hit.point.x - hit.collider.bounds.min.x) / hit.collider.bounds.size.x;
+    uv.y = (hit.point.y - hit.collider.bounds.min.y) / hit.collider.bounds.size.y;
+
+    uv.x *= tex.width;
+    uv.y *= tex.height;
+
+    return uv;
   }
 
 
