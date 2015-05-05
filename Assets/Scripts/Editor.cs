@@ -141,6 +141,14 @@ public class Editor : MonoBehaviour {
       button.onClick.AddListener(() => this.texture = image.texture);
       // TODO: Animated textures
     }
+
+    Mesh mesh = this.model.GetComponent<MeshFilter>().sharedMesh;
+
+    for (int i = 0; i < mesh.uv.Length; ++i) {
+      mesh.uv[i].Scale(this.model.transform.localScale / 16.0F);
+    }
+
+    mesh.UploadMeshData(false);
   }
 
 
@@ -198,7 +206,7 @@ public class Editor : MonoBehaviour {
 
             this.paintColor = texture.GetPixel((int)uv.x, (int)uv.y);
           }
-          
+
           if (Input.GetMouseButtonDown(1)) {
             // Paint the selected color on the box
             Texture2D texture = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
@@ -235,16 +243,7 @@ public class Editor : MonoBehaviour {
 
 
   private Vector2 GetUV(RaycastHit hit) {
-    Texture2D tex = hit.transform.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
-    Vector2 uv;
-
-    uv.x = (hit.point.x - hit.collider.bounds.min.x) / hit.collider.bounds.size.x;
-    uv.y = (hit.point.y - hit.collider.bounds.min.y) / hit.collider.bounds.size.y;
-
-    uv.x *= tex.width;
-    uv.y *= tex.height;
-
-    return uv;
+    return hit.textureCoord * 16.0F; // TODO: Allow for different resolution textures
   }
 
 
