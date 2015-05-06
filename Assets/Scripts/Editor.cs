@@ -142,13 +142,17 @@ public class Editor : MonoBehaviour {
       // TODO: Animated textures
     }
 
-    Mesh mesh = this.model.GetComponent<MeshFilter>().sharedMesh;
+    MeshFilter[] meshFilters = this.model.GetComponentsInChildren<MeshFilter>();
 
-    for (int i = 0; i < mesh.uv.Length; ++i) {
-      mesh.uv[i].Scale(this.model.transform.localScale / 16.0F);
+    foreach (MeshFilter meshFilter in meshFilters) {
+      Mesh mesh = meshFilter.mesh;
+
+      for (int i = 0; i < mesh.uv.Length; ++i) {
+        mesh.uv[i].Scale(this.model.transform.localScale / 16.0F);
+      }
+
+      mesh.UploadMeshData(false);
     }
-
-    mesh.UploadMeshData(false);
   }
 
 
@@ -213,10 +217,7 @@ public class Editor : MonoBehaviour {
 
             Vector2 uv = this.GetUV(hit);
 
-            Debug.Log(texture);
-
-            Debug.Log(hit.transform.name);
-            Debug.Log(uv);
+            Debug.Log(hit.point);
 
             texture.SetPixel((int)uv.x, (int)uv.y, this.paintColor);
             texture.Apply();
@@ -243,7 +244,24 @@ public class Editor : MonoBehaviour {
 
 
   private Vector2 GetUV(RaycastHit hit) {
-    return hit.textureCoord * 16.0F; // TODO: Allow for different resolution textures
+    Vector3 point = hit.point;
+
+    switch (this.side) {
+      case Direction.South:
+        return new Vector2(point.x, point.y);
+      case Direction.North:
+        return new Vector2(Mathf.Abs(16.0F - point.x), point.y);
+      case Direction.East:
+        return new Vector2(Mathf.Abs(16.0F - point.z), point.y);
+      case Direction.West:
+        return new Vector2(point.z, point.y);
+      case Direction.Up:
+        return new Vector2(Mathf.Abs(16.0F - point.x), Mathf.Abs(16.0F - point.z));
+      case Direction.Down:
+        return new Vector2(point.x, point.z);
+    }
+
+    return new Vector2();
   }
 
 
